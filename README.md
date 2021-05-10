@@ -8,24 +8,20 @@ This is the second version of converting caffe model to onnx model. In this vers
 
 ## Installation
 Install from pypi  
-`
+```
 pip install caffe-onnx
-`
+```
 
 Install latest from github  
-`
+```
 pip install git+https://github.com/asiryan/caffe-onnx
-`
+```
 
 Build and install latest from source (for development)  
-`
+```
 git clone https://github.com/asiryan/caffe-onnx
-`
-
-Once dependencies are installed, from the caffe-onnx folder call:  
-`
 python setup.py install
-`  
+``` 
 
 ## Usage
 To get started with caffe-onnx, run the caffe2onnx.convert command, providing:
