@@ -45,6 +45,7 @@ python -m caffe2onnx.convert
 * Yolo V3
 * VGG
 * GoogleNet
+* CaffeNet
 * Sphereface
 
 ## License
