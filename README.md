@@ -36,10 +36,10 @@ To get started with caffe-onnx, run the caffe2onnx.convert command, providing:
 
 ```
 python -m caffe2onnx.convert
-    --prototxt          (caffe's prototxt file path)
-    --caffemodel        (caffe's caffemodel file path)
-    --onnx              (output onnx file path)
-    --frozen            (frozen graph or not)
+    --prototxt          caffe's prototxt file path
+    [--caffemodel       caffe's caffemodel file path]
+    [--onnx             output onnx file path]
+    [--frozen           frozen graph or not]
 ```
 
 ## License
