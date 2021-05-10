@@ -26,6 +26,7 @@ setuptools.setup(
     version=VERSION,
     description=DESCRIPTION,
     long_description = LONG_DESCRIPTION,
+    long_description_content_type='text/markdown',
     license=LICENSE,
     packages=setuptools.find_packages(),
     python_requires=PYTHON,
