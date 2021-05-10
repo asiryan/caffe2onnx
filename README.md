@@ -44,7 +44,7 @@ python -m caffe2onnx.convert
 * Deconvolution
 * Concat
 * Dropout
-* InnerProduct(Reshape+Gemm)
+* InnerProduct (Reshape + Gemm)
 * LRN
 * Pooling
 * Unpooling
