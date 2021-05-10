@@ -1,4 +1,4 @@
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##--------------------------------------------------Reshape---------------------------------------------------------##
 # Calculate the output dimension
 def getReshapeOutShape(layer,input_shape):

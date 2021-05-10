@@ -1,4 +1,4 @@
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##-------------------------------------------------Eltwise----------------------------------------------------------##
 def createEltwise(layer, nodename, inname, outname, input_shape):
     # Determine the operator type

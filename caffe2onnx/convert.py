@@ -1,8 +1,8 @@
 import os
-from src.load_save_model import loadcaffemodel, saveonnxmodel
-from src.caffe2onnx import Caffe2Onnx
-from src.args_parser import parse_args
-from src.utils import freeze
+from caffe2onnx.src.load_save_model import loadcaffemodel, saveonnxmodel
+from caffe2onnx.src.caffe2onnx import Caffe2Onnx
+from caffe2onnx.src.args_parser import parse_args
+from caffe2onnx.src.utils import freeze
 
 
 def main(args):

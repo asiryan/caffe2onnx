@@ -1,4 +1,4 @@
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##-----------------------------------------------------Gemm-------------------------------------------------------##
 # Get hyperparameters
 def getGemmAttri(layer):

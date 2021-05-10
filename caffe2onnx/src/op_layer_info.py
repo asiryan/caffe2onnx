@@ -1,5 +1,5 @@
 from onnx import TensorProto
-from proto import caffe_upsample_pb2 as caffe_pb2
+from caffe2onnx.proto import caffe_upsample_pb2 as caffe_pb2
 
 # caffe layers
 Layer_CONCAT = caffe_pb2.V1LayerParameter.CONCAT #3

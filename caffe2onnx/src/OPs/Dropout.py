@@ -1,4 +1,4 @@
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##----------------------------------------------------Dropout-------------------------------------------------------##
 # Get hyperparameters
 def getDropoutAttri(layer):

@@ -1,4 +1,4 @@
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##---------------------------------------------PRelu------------------------------------------------------------##
 def getPReluOutShape(input_shape):
     output_shape = input_shape

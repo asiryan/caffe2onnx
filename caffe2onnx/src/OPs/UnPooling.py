@@ -1,5 +1,5 @@
 import numpy as np
-import src.c2oObject as Node
+import caffe2onnx.src.c2oObject as Node
 ##-----------------------------------------------------UnPooling--------------------------------------------------##
 # Get hyperparameters
 def getUnPoolingAttri(layer):

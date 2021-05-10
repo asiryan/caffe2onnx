@@ -2,7 +2,7 @@ import setuptools
 import os
 
 # package metadata
-NAME = 'caffe-onnx'
+NAME = 'caffe2onnx'
 VERSION = '1.0.0.0'
 DESCRIPTION = 'Convert Caffe models to ONNX.'
 LICENSE = 'MIT'
@@ -33,6 +33,8 @@ setuptools.setup(
     author_email='dmc5mod@yandex.ru',
     url=GIT,
     install_requires=requirements,
+    include_package_data=True,
+    zip_safe=False,
     classifiers=[
         'Topic :: Software Development :: Libraries',
         'Intended Audience :: Science/Research',

@@ -1,6 +1,6 @@
 from google.protobuf import text_format
 import onnx
-from proto import caffe_upsample_pb2 as caffe_pb2
+from caffe2onnx.proto import caffe_upsample_pb2 as caffe_pb2
 
 def loadcaffemodel(net_path,model_path):
     # read prototxt
@@ -22,6 +22,6 @@ def saveonnxmodel(onnxmodel,onnx_save_path):
     try:
         onnx.checker.check_model(onnxmodel)
         onnx.save_model(onnxmodel, onnx_save_path)
-        print("the model has been successfully saved and has been saved to " + onnx_save_path)
+        print("the model has been successfully saved to " + onnx_save_path)
     except Exception as e:
         print("the model was not saved successfully:\n", e)
