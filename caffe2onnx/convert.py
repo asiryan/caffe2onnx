@@ -7,11 +7,14 @@ from caffe2onnx.src.utils import freeze
 
 def main(args):
     prototxt_path = args.prototxt
-    caffemodel_path = args.caffemodel
+
+    if args.caffemodel is None:
+        caffemodel_path = f'{os.path.splitext(prototxt_path)[0]}.caffemodel'
+    else:
+        caffemodel_path = args.caffemodel
 
     if args.onnx is None:
-        model_name = os.path.splitext(prototxt_path)[0]
-        onnxmodel_path = f'{model_name}.onnx'
+        onnxmodel_path = f'{os.path.splitext(prototxt_path)[0]}.onnx'
     else:
         onnxmodel_path = args.onnx
 

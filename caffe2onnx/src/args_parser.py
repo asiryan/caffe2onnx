@@ -9,7 +9,7 @@ def parse_args():
 
     parser.add_argument("--caffemodel",
                         type=str,
-                        required=True,
+                        required=False,
                         help="input .caffemodel")
 
     parser.add_argument("--onnx",
