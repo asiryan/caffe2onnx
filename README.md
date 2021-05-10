@@ -17,7 +17,7 @@ Install latest from github
 pip install git+https://github.com/asiryan/caffe-onnx
 ```
 
-Build and install latest from source (for development)  
+Build and install latest from source  
 ```
 git clone https://github.com/asiryan/caffe-onnx
 python setup.py install
