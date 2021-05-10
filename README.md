@@ -1,5 +1,5 @@
 # caffe-onnx
-This tool converts Caffe models to ONNX via command line ( **caffe environment is not required** ).
+This tool converts Caffe models to ONNX via command line without caffe environment.
 
 ## Introduction
 **caffe-onnx** is based on previous work by [htshinichi](https://github.com/htshinichi/caffe-onnx).  
