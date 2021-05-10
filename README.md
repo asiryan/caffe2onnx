@@ -38,6 +38,22 @@ python -m caffe2onnx.convert
     [--frozen           frozen graph or not]
 ```
 
+## Oeprators
+* BatchNorm
+* Convolution
+* Deconvolution
+* Concat
+* Dropout
+* InnerProduct(Reshape+Gemm)
+* LRN
+* Pooling
+* Unpooling
+* ReLU
+* Softmax
+* Eltwise
+* Upsample
+* Scale
+
 ## Models
 * ResNet
 * AlexNet
