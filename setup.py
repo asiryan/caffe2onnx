@@ -16,10 +16,6 @@ this = os.path.dirname(__file__)
 with open(os.path.join(this, 'README.md'), encoding='utf-8') as f:
     LONG_DESCRIPTION = f.read()
 
-# requirements
-with open(os.path.join(this, 'requirements.txt'), "r") as f:
-    requirements = [_ for _ in [_.strip("\r\n ")
-                                for _ in f.readlines()] if _ is not None]
 # setup tools
 setuptools.setup(
     name=NAME,
@@ -33,9 +29,10 @@ setuptools.setup(
     author='Valery Asiryan',
     author_email='dmc5mod@yandex.ru',
     url=GIT,
-    install_requires=requirements,
-    include_package_data=True,
-    zip_safe=False,
+    install_requires=[
+        'protobuf',
+        'onnx==1.4.0'
+    ],
     classifiers=[
         'Topic :: Software Development :: Libraries',
         'Intended Audience :: Science/Research',
