@@ -38,7 +38,7 @@ python -m caffe2onnx.convert
     [--frozen           frozen graph or not]
 ```
 
-## Oeprators
+## Operators
 * BatchNorm
 * Convolution
 * Deconvolution
