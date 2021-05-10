@@ -38,7 +38,7 @@ usage: convert2onnx.py [-h] [prototxt] [caffemodel] [onnx] [frozen]
 positional arguments:
   prototxt          caffe's prototxt file path
   caffemodel        caffe's caffemodel file path
-  onnx              onnx model name
+  onnx              output onnx file path
   frozen            frozen graph or not
 ```
 
