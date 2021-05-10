@@ -24,7 +24,7 @@ python setup.py install
 ``` 
 
 ## Usage
-To get started with caffe-onnx, run the caffe2onnx.convert command, providing:
+To get started with **caffe-onnx**, run the *caffe2onnx.convert* command, providing:
 * the path to your caffe prototxt,
 * the path to your caffe model (*not required*),
 * the output path of the onnx model (*not required*),
