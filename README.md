@@ -35,13 +35,11 @@ To get started with caffe-onnx, run the caffe2onnx.convert command, providing:
 * the flag (frozen graph or not).
 
 ```
-usage: convert2onnx.py [-h] [prototxt] [caffemodel] [onnx] [frozen]
-
-positional arguments:
-  prototxt          caffe's prototxt file path
-  caffemodel        caffe's caffemodel file path
-  onnx              output onnx file path
-  frozen            frozen graph or not
+python -m caffe2onnx.convert
+    --prototxt          (caffe's prototxt file path)
+    --caffemodel        (caffe's caffemodel file path)
+    --onnx              (output onnx file path)
+    --frozen            (frozen graph or not)
 ```
 
 ## License
