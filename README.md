@@ -9,17 +9,17 @@ This is the second version of converting caffe model to onnx model. In this vers
 ## Installation
 Install from pypi  
 ```
-pip install caffe-onnx
+pip install caffe2onnx
 ```
 
 Install latest from github  
 ```
-pip install git+https://github.com/asiryan/caffe-onnx
+pip install git+https://github.com/asiryan/caffe2onnx
 ```
 
 Build and install latest from source  
 ```
-git clone https://github.com/asiryan/caffe-onnx
+git clone https://github.com/asiryan/caffe2onnx
 python setup.py install
 ``` 
 
