@@ -29,7 +29,7 @@ python setup.py install
 To get started with caffe-onnx, run the caffe2onnx.convert command, providing:
 * the path to your caffe prototxt,
 * the path to your caffe model,
-* the output path of onnx model,
+* the output path of the onnx model,
 * the flag (frozen graph or not).
 
 `
