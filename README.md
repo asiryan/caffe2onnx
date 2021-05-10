@@ -42,7 +42,7 @@ positional arguments:
   frozen            frozen graph or not
 ```
 
-Simple example of usage:  
+Example of usage:  
 `
 python -m caffe2onnx.convert --prototxt googlenet.prototxt
 `
