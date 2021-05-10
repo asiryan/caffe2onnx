@@ -39,4 +39,4 @@ python -m caffe2onnx.convert
 ```
 
 ## License
-BSD-3
+[BSD-3](LICENSE)
