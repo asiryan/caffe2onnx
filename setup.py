@@ -3,9 +3,9 @@ import os
 
 # package metadata
 NAME = 'caffe2onnx'
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 DESCRIPTION = 'Convert Caffe models to ONNX.'
-LICENSE = 'MIT'
+LICENSE = 'BSD-3'
 GIT = 'https://github.com/asiryan/caffe-onnx'
 PYTHON = '>=3.5'
 
@@ -37,7 +37,7 @@ setuptools.setup(
         'Topic :: Software Development :: Libraries',
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
