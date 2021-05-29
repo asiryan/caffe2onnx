@@ -65,4 +65,4 @@ python -m caffe2onnx.convert
 * Sphereface
 
 ## License
-[BSD-3](LICENSE)
+[BSD-3](https://github.com/asiryan/caffe2onnx/blob/main/LICENSE)
