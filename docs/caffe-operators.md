@@ -38,4 +38,4 @@
 | UnPooling             | ✓                                  | ✓                                                |
 | Upsample              | ✓                                  | ✓                                                |
 
-If you want add an op which is not supported by our repo, you can look up to docs ofr [onnx v1.4.0](https://github.com/onnx/onnx/blob/rel-1.4.0/docs/Operators.md) or [onnx v1.6.0](https://github.com/onnx/onnx/blob/rel-1.6.0/docs/Operators.md) and add your own op by following the other existing ops in src/OPs.
+If you want add an op which is not supported by this repo, you can look up to docs ofr [onnx v1.4.0](https://github.com/onnx/onnx/blob/rel-1.4.0/docs/Operators.md) or [onnx v1.6.0](https://github.com/onnx/onnx/blob/rel-1.6.0/docs/Operators.md) and add your own op by following the other existing ops in src/OPs.
