@@ -28,10 +28,10 @@ class c2oNode(object):
 class c2oGraph():
     def __init__(self,onnxname):
         self.name = onnxname
-        self.in_tvi = []         # Store input information
-        self.out_tvi = []        # Store output information
-        self.init_t = []         # Store the value of the input parameter
-        self.hidden_out_tvi = [] # Store intermediate output information
+        self.in_tvi = []            # Store input information
+        self.out_tvi = []           # Store output information
+        self.init_t = []            # Store the value of the input parameter
+        self.hidden_out_tvi = []    # Store intermediate output information
 
     def addInputsTVI(self,in_tvi):
         self.in_tvi.append(in_tvi)

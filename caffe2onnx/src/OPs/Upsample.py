@@ -23,5 +23,4 @@ def createUpsample(layer, nodename, inname, outname, input_shape):
 
     #print(output_shape)
     node = Node.c2oNode(layer, nodename, "Upsample", inname, outname, input_shape, output_shape, dict)
-    print(nodename, " node construction completed")
     return node

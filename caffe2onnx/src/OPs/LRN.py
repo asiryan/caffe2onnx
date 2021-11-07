@@ -30,5 +30,4 @@ def createLRN(layer,nodename, inname,outname,input_shape):
 
     # Build node
     node = Node.c2oNode(layer, nodename, "LRN", inname, outname, input_shape, output_shape, dict)
-    print(nodename, " node construction completed")
     return node

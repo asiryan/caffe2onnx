@@ -21,5 +21,4 @@ def createRelu(layer,nodename,inname,outname,input_shape):
     else:
         node = Node.c2oNode(layer, nodename, "LeakyRelu", inname, outname, input_shape, output_shape, dict=dict)
 
-    print(nodename, " node construction completed")
     return node

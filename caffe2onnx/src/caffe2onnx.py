@@ -60,7 +60,7 @@ class Caffe2Onnx():
                     self.model_input_name.append(lay.name+"_input")
                     self.model_input_shape.append(lay.input_param.shape[0].dim)
                     self.onnxmodel.addInputsTVI(in_tvi)
-                    print("add model input information")
+                    #print("add model input information")
                 else:
                     layer_list.append(lay)
             return layer_list
@@ -109,8 +109,7 @@ class Caffe2Onnx():
 
 
     # Add parameters to Inputs and generate tensor storage data
-    def __addInputsTVIfromParams(self,layer,ParamName,ParamType):
-        #print(layer.type)
+    def __addInputsTVIfromParams(self, layer, ParamName, ParamType):
         ParamShape = []
         ParamData = []
         # Find out the parameters in the corresponding caffemodel based on the layer name
@@ -128,7 +127,7 @@ class Caffe2Onnx():
                         ParamShape = [[ParamShape[0][1]], [ParamShape[1][1]]]
                         ParamData = [[q/1. for q in p.data] if i==0 else [q/(1. + 1e-5) for q in p.data] for i,p in enumerate(Params)]
 
-                    # comment it for tvm because tvm use broadcast at prelu layer
+                # comment it for tvm because tvm use broadcast at prelu layer
                 elif layer.type == "PReLU":
                     ParamShape = [[ParamShape[0][0], 1, 1]]
                 break
@@ -138,13 +137,12 @@ class Caffe2Onnx():
             ParamName = ParamName[0:len(ParamShape)]
             ParamType = ParamType[0:len(ParamShape)]
             for i in range(len(ParamShape)):
-                #print(ParamName[i])
                 ParamName[i] = layer.name+ParamName[i]
                 p_tvi = helper.make_tensor_value_info(ParamName[i], ParamType[i], ParamShape[i])
                 p_t = helper.make_tensor(ParamName[i],ParamType[i],ParamShape[i],ParamData[i])
                 self.onnxmodel.addInputsTVI(p_tvi)
                 self.onnxmodel.addInitTensor(p_t)
-                print("add parameters " + ParamName[i] + " input information and tensor data")
+                #print("add parameters " + ParamName[i] + " input information and tensor data")
         if layer.type == "BatchNorm" or layer.type == "BN" or layer.type == "Scale":
             return ParamName, ParamShape
         return ParamName
@@ -158,7 +156,7 @@ class Caffe2Onnx():
             p_t = helper.make_tensor(Param_Name[i], ParamType[i], ParamShape[i], ParamData[i])
             self.onnxmodel.addInputsTVI(p_tvi)
             self.onnxmodel.addInitTensor(p_t)
-            print("add parameters " + Param_Name[i] + " input information and tensor data")
+            #print("add parameters " + Param_Name[i] + " input information and tensor data")
         return Param_Name
 
 
@@ -213,6 +211,7 @@ class Caffe2Onnx():
 
     def __getNodeList(self,Layers):
         for i in range(len(Layers)):
+            print("convert layer: " + Layers[i].name)
             # Convolution
             if Layers[i].type == "Convolution" or Layers[i].type == Layer_CONVOLUTION:
                 # 1. Get node input name, input dimension, output name, node name
@@ -508,7 +507,7 @@ class Caffe2Onnx():
                 for k in range(len(innernode.outputs_shape)):
                     hid_out_tvi = helper.make_tensor_value_info(innernode.outputs_name[k], TensorProto.FLOAT,innernode.outputs_shape[k])
                     self.onnxmodel.addValueInfoTVI(hid_out_tvi)
-        print("add model output information and model intermediate output information")
+        #print("add model output information and model intermediate output information")
 
     # Create a model
     def createOnnxModel(self):
@@ -522,6 +521,6 @@ class Caffe2Onnx():
             value_info=self.onnxmodel.hidden_out_tvi
         )
         model_def = helper.make_model(graph_def, producer_name='caffe')
-        print("*.onnx model conversion completed")
+        print("converting caffe model to onnx model completed successfully")
         return model_def
 

@@ -74,5 +74,4 @@ def createPooling(layer,nodename,inname,outname,input_shape):
         else:
             node = Node.c2oNode(layer, nodename, "AveragePool", inname, outname, input_shape, output_shape, dict=dict)
     # Layers [i] .pooling_param.pool == 2 is random pooling
-    print(nodename, " node construction completed")
     return node

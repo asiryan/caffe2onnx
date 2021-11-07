@@ -19,5 +19,4 @@ def createDropout(layer, nodename, inname, outname, input_shape):
     output_shape = getDropoutOutShape(input_shape)
     #  Build node
     node = Node.c2oNode(layer, nodename, "Dropout", inname, outname, input_shape, output_shape, dict=dict)
-    print(nodename, " node construction completed")
     return node

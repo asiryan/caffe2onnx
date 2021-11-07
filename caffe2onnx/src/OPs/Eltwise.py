@@ -31,5 +31,4 @@ def __createAdd(layer, nodename, inname, outname, input_shape):
 def __createMax(layer, nodename, inname, outname, input_shape):
     output_shape = input_shape
     node = Node.c2oNode(layer, nodename, "Max", inname, outname, input_shape, output_shape)
-    print(nodename, " node construction completed")
     return node

@@ -75,6 +75,5 @@ def createConv(layer, nodename, inname, outname, input_shape):
     output_shape = getConvOutShape(input_shape, layer, dict)
     # Build node
     node = Node.c2oNode(layer, nodename, "Conv", inname, outname, input_shape, output_shape, dict)
-    print(nodename, " node construction completed")
     return node
 

@@ -20,5 +20,4 @@ def createGemm(layer, nodename, inname, outname, input_shape, num_output):
     output_shape = getGemmOutShape(input_shape,num_output)
     # Build node
     node = Node.c2oNode(layer, nodename, "Gemm", inname, outname, input_shape, output_shape, dict)
-    print(nodename, " node construction completed")
     return node

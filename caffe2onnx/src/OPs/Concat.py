@@ -20,5 +20,4 @@ def createConcat(layer, nodename, inname, outname, input_shape):
     output_shape = getConcatOutShape(input_shape)
 
     node = Node.c2oNode(layer, nodename, "Concat", inname, outname, input_shape, output_shape, dict)
-    print(nodename, " node construction completed")
     return node
