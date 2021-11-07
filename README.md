@@ -39,30 +39,7 @@ python -m caffe2onnx.convert
 ```
 
 ## Operators
-* BatchNorm
-* Convolution
-* Deconvolution
-* Concat
-* Dropout
-* InnerProduct (Reshape + Gemm)
-* LRN
-* Pooling
-* Unpooling
-* ReLU
-* Softmax
-* Eltwise
-* Upsample
-* Scale
-
-## Models
-* ResNet
-* AlexNet
-* AgeNet
-* Yolo V3
-* VGG
-* GoogleNet
-* CaffeNet
-* Sphereface
+See documentation of [caffe supported operators](https://github.com/FaceONNX/caffe2onnx/blob/main/docs/onnx-version.md).
 
 ## License
 [BSD-3](https://github.com/asiryan/caffe2onnx/blob/main/LICENSE)
