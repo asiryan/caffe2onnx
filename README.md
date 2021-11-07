@@ -39,7 +39,7 @@ python -m caffe2onnx.convert
 ```
 
 ## Operators
-See documentation of [caffe supported operators](https://github.com/FaceONNX/caffe2onnx/blob/main/docs/onnx-version.md).
+See the documentation of [caffe supported operators](https://github.com/FaceONNX/caffe2onnx/blob/main/docs/onnx-version.md).
 
 ## License
 [BSD-3](https://github.com/asiryan/caffe2onnx/blob/main/LICENSE)
