@@ -27,8 +27,8 @@ To get started with **caffe2onnx**, run the *caffe2onnx.convert* command, provid
 
 ```
 python -m caffe2onnx.convert
-    --prototxt          caffe's prototxt file path
-    [--caffemodel       caffe's caffemodel file path]
+    --prototxt          caffe prototxt file path
+    [--caffemodel       caffe caffemodel file path]
     [--onnx             output onnx file path]
     [--frozen           frozen graph or not]
 ```
