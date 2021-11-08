@@ -3,7 +3,7 @@ import os
 
 # package metadata
 NAME = 'caffe2onnx'
-VERSION = '1.1.3'
+VERSION = '2.0.1'
 DESCRIPTION = 'Convert Caffe models to ONNX.'
 LICENSE = 'BSD-3'
 GIT = 'https://github.com/asiryan/caffe-onnx'
@@ -31,7 +31,7 @@ setuptools.setup(
     url=GIT,
     install_requires=[
         'protobuf',
-        'onnx==1.4.0'
+        'onnx==1.6.0'
     ],
     classifiers=[
         'Topic :: Software Development :: Libraries',

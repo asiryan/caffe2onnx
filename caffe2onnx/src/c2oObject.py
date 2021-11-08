@@ -2,11 +2,15 @@ from onnx import helper
 
 
 class c2oNode(object):
-    def __init__(self,layer,node_name,type,inputs_name,outputs_name,inputs_shape,outputs_shape,dict={}):
+    def __init__(self,layer,node_name,type,inputs_name,outputs_name,inputs_shape,outputs_shape,dict={}, Flag=False):
         self.node = self.__createNode(type, inputs_name, outputs_name, node_name, dict)
 
         self.bottom = layer.bottom
-        self.top = layer.top
+        if Flag is True:
+            self.top = outputs_name
+        else:
+            self.top = layer.top
+            
         self.inputs_name = inputs_name
         self.outputs_name = outputs_name
         self.inputs_shape = inputs_shape

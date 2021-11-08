@@ -1,77 +1,201 @@
 import numpy as np
 import caffe2onnx.src.c2oObject as Node
-##-----------------------------------------------------Pooling--------------------------------------------------##
-# Get hyperparameters
-def getPoolingAttri(layer):
-    # Pooled core size
-    kernel_shape = np.array([layer.pooling_param.kernel_size]*2).flatten().tolist()
-    if layer.pooling_param.kernel_size == []:
-        kernel_shape = [layer.pooling_param.kernel_h,layer.pooling_param.kernel_w]
-    # Step
-    strides = [1, 1] # the default is 1
-    if layer.pooling_param.stride != []:
-        strides = np.array([layer.pooling_param.stride]*2).flatten().tolist()
-    # Filling
-    pads = [0, 0, 0, 0] # the default is 0
-    # Here is the same as when convolution, if there is a pad, it is set according to its value
-    if layer.pooling_param.pad != []:
-        pads = np.array([layer.pooling_param.pad] * 4).flatten().tolist()
-    elif layer.pooling_param.pad_h != 0 or layer.pooling_param.pad_w != 0:
-        pads = [layer.pooling_param.pad_h,layer.pooling_param.pad_w,layer.pooling_param.pad_h,layer.pooling_param.pad_w]
+import math
+import copy
 
-    # Hyperparameter dictionary
-    dict = {"kernel_shape":kernel_shape,
-            "strides":strides,
-            "pads":pads
-            }
-    return dict
 
-# Calculate the output dimension
-def getPoolingOutShape(input_shape,layer,dict, with_indices=False):
-    kernel_shape = dict["kernel_shape"]
-    pads = dict["pads"]
-    strides = dict["strides"]
-
-    # Calculate the output dimension, as with convolution, round up if it is non-integer
-    h = (input_shape[0][2] - kernel_shape[0] + pads[0] + pads[2])/strides[0] + 1
-    if h > int(h):
-        output_shape_h = int(h) + 1
-        pads[2] += 1
+def get_pool_pads(layer):
+    pad = layer.pooling_param.pad
+    if pad != 0:
+        pad_h = pad_w = pad
     else:
-        output_shape_h = int(h)
+        if layer.pooling_param.pad_h != 0 and layer.pooling_param.pad_w != 0:
+            pad_h = layer.pooling_param.pad_h
+            pad_w = layer.pooling_param.pad_w
+        else:
+            pad_h = pad_w = 0
+    pads = [0, 0, pad_h, pad_w, 0, 0, pad_h, pad_w]
 
-    w = (input_shape[0][3] - kernel_shape[1] + pads[1] + pads[3])/strides[1] + 1
-    if w > int(w):
-        output_shape_w = int(w) + 1
-        pads[3] += 1
-    else:
-        output_shape_w = int(w)
+    return pads
 
-    if kernel_shape[0] == 0:
-        output_shape_h,output_shape_w = (1,1)
-    if not with_indices:
-        output_shape = [[input_shape[0][0],input_shape[0][1],output_shape_h,output_shape_w]]
+
+def calculate_pad_output_shape(input_shape, pads):
+    pad_h = pads[2]
+    pad_w = pads[3]
+    output_shape = copy.deepcopy(input_shape[0])
+
+    output_shape[2] = output_shape[2] + 2 * pad_h
+    output_shape[3] = output_shape[3] + 2 * pad_w
+    return [output_shape]
+
+
+def create_pad_node(layer, node_name, input_name, output_name, input_shape):
+    pads = get_pool_pads(layer)
+    attributes = {"mode": "constant"}
+    pad_input_name = input_name
+    pad_output_name = output_name
+    pad_output_shape = calculate_pad_output_shape(input_shape, pads)
+
+    node = Node.c2oNode(layer, node_name, 'Pad', pad_input_name, pad_output_name, input_shape, pad_output_shape,
+                        attributes)
+
+    return node
+
+
+def get_pool_attributes(layer, pool_type, input_shape):
+    number = input_shape[0][0]
+    channel = input_shape[0][1]
+    height = input_shape[0][2]
+    weight = input_shape[0][3]
+    kernel_size = layer.pooling_param.kernel_size
+    pad = layer.pooling_param.pad
+    stride = layer.pooling_param.stride
+
+    if pool_type == 'GlobalMaxPool' or pool_type == 'GlobalAveragePool':
+        global_pooling = True
     else:
-        output_shape = [[input_shape[0][0],input_shape[0][1],output_shape_h,output_shape_w], [input_shape[0][0],input_shape[0][1],output_shape_h,output_shape_w]]
+        global_pooling = False
+    # pass kernel_shape
+    if global_pooling:
+        kernel_h = height
+        kernel_w = weight
+    else:
+        if kernel_size != 0:
+            kernel_h = kernel_w = kernel_size
+        elif layer.pooling_param.kernel_h != 0 and layer.pooling_param.kernel_w != 0:
+            kernel_h = layer.pooling_param.kernel_h
+            kernel_w = layer.pooling_param.kernel_w
+        else:
+            kernel_h = 1
+            kernel_w = 1
+    kernel_shape = [kernel_h, kernel_w]
+    # pass pad
+    if pad != 0:
+        pad_h = pad_w = pad
+    else:
+        if layer.pooling_param.pad_h != 0 and layer.pooling_param.pad_w != 0:
+            pad_h = layer.pooling_param.pad_h
+            pad_w = layer.pooling_param.pad_w
+        else:
+            pad_h = pad_w = 0
+    pads = [pad_h, pad_w, pad_h, pad_w]
+    pads = [0, 0, 0, 0]
+    # pass strides
+    stride_h = stride_w = 1
+    if stride != 1:
+        stride_h = stride_w = stride
+    else:
+        if layer.pooling_param.stride_h != 0 and layer.pooling_param.stride_w != 0:
+            stride_h = layer.pooling_param.stride_h
+            stride_w = layer.pooling_param.stride_w
+        else:
+            stride_h = stride_w = 1
+    strides = [stride_h, stride_w]
+
+    # pass round_mode
+    # caffe definition
+    #   enum RoundMode {
+    #     CEIL = 0;
+    #     FLOOR = 1;
+    #   }
+    # default Ceil = 0
+    # onnx ceil_mode floor = 0, ceil = 1, default: floor = 0
+    round_mode_ceil = 0
+    round_mode_floor = 1
+    round_mode = 0
+    if layer.pooling_param.round_mode == 0:
+        round_mode = round_mode_ceil
+    elif layer.pooling_param.round_mode == 1:
+        round_mode = round_mode_floor
+    else:
+        # wrong condition
+        exit(-1)
+    if round_mode == round_mode_ceil:
+        ceil_mode = 1
+    else:
+        ceil_mode = 0
+
+    attributes = {"kernel_shape": kernel_shape,
+                  "strides": strides,
+                  "pads": pads,
+                  "ceil_mode": ceil_mode
+                  }
+    return attributes
+
+
+def get_pooling_output_shape(input_shape, layer, attributes, with_indices=False):
+    number = input_shape[0][0]
+    channel = input_shape[0][1]
+    kernel_shape = attributes["kernel_shape"]
+    kernel_h = kernel_shape[0]
+    kernel_w = kernel_shape[1]
+    pads = attributes["pads"]
+    strides = attributes["strides"]
+    stride_h = strides[0]
+    stride_w = strides[1]
+    ceil_mode = attributes["ceil_mode"]
+    pad_h = pads[2]
+    pad_w = pads[3]
+    height = input_shape[0][2]
+    width = input_shape[0][3]
+
+    if ceil_mode == 1:
+        # ceil
+        pooled_height = int(math.ceil((height + 2 * pad_h - kernel_h) / stride_h)) + 1
+        pooled_width = int(math.ceil((width + 2 * pad_h - kernel_w) / stride_w)) + 1
+    else:
+        # floor
+        pooled_height = int(math.floor((height + 2 * pad_h - kernel_h) / stride_h)) + 1
+        pooled_width = int(math.floor((width + 2 * pad_h - kernel_w) / stride_w)) + 1
+
+    if pad_h != 0 or pad_w != 0:
+        if ((pooled_height - 1) * stride_h) >= (height + pad_h):
+            pooled_height = pooled_height - 1
+        if ((pooled_width - 1) * stride_w) >= (width + pad_w):
+            pooled_width = pooled_width - 1
+    if kernel_h == 0:
+        kernel_h = kernel_w = 1
+    if with_indices:
+        output_shape = [[number, channel, pooled_height, pooled_width],
+                        [number, channel, pooled_height, pooled_width]]
+    else:
+        output_shape = [[number, channel, pooled_height, pooled_width]]
     return output_shape
 
-# Build node
-def createPooling(layer,nodename,inname,outname,input_shape):
-    dict = getPoolingAttri(layer)
-    with_indices = True if len(outname) == 2 else False
-    output_shape = getPoolingOutShape(input_shape,layer, dict, with_indices=with_indices)
 
-    # Judgment is the type of pooling, maximum pooling, average pooling
-    if layer.pooling_param.pool == 0:
-        if layer.pooling_param.global_pooling == True:
-            node = Node.c2oNode(layer, nodename, "GlobalMaxPool", inname, outname, input_shape, output_shape, dict={})
-        else:
-            node = Node.c2oNode(layer, nodename, "MaxPool", inname, outname, input_shape, output_shape, dict=dict)
-    elif layer.pooling_param.pool == 1:
-        if layer.pooling_param.global_pooling == True:
-         
-            node = Node.c2oNode(layer, nodename, "GlobalAveragePool", inname, outname, input_shape, output_shape, dict={})
-        else:
-            node = Node.c2oNode(layer, nodename, "AveragePool", inname, outname, input_shape, output_shape, dict=dict)
-    # Layers [i] .pooling_param.pool == 2 is random pooling
+def pooling_type(layer):
+    pool_value = layer.pooling_param.pool
+    global_value = layer.pooling_param.global_pooling
+    if pool_value == 0 and global_value is True:
+        return 'GlobalMaxPool'
+    elif pool_value == 1 and global_value is True:
+        return 'GlobalAveragePool'
+    elif pool_value == 0 and global_value is False:
+        return 'MaxPool'
+    elif pool_value == 1 and global_value is False:
+        return 'AveragePool'
+    else:
+        print("unsupport pooling!")
+        exit(-1)
+
+
+def create_pooling_node(layer, nodename, inname, outname, input_shape):
+    pool_type = pooling_type(layer)
+    node = None
+    attributes = get_pool_attributes(layer, pool_type, input_shape)
+    with_indices = True if len(outname) == 2 else False
+    output_shape = get_pooling_output_shape(input_shape, layer, attributes, with_indices=with_indices)
+
+    if pool_type == 'GlobalMaxPool':
+        node = Node.c2oNode(layer, nodename, "GlobalMaxPool", inname, outname, input_shape, output_shape, dict={})
+    elif pool_type == 'MaxPool':
+        node = Node.c2oNode(layer, nodename, "MaxPool", inname, outname, input_shape, output_shape, dict=attributes)
+    elif pool_type == 'GlobalAveragePool':
+        node = Node.c2oNode(layer, nodename, "GlobalAveragePool", inname, outname, input_shape, output_shape,
+                            dict={})
+    elif pool_type == 'AveragePool':
+        node = Node.c2oNode(layer, nodename, "AveragePool", inname, outname, input_shape, output_shape,
+                            dict=attributes)
+
+    assert (node is not None)
     return node

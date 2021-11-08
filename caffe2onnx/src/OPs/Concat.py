@@ -1,23 +1,50 @@
 import caffe2onnx.src.c2oObject as Node
-##---------------------------------------------Concat-----------------------------------------------------------##
-# Get hyperparameters
-def getConcatAttri(layer):
+from typing import List
+import copy
+
+
+def get_concat_attributes(layer):
     axis = layer.concat_param.axis
-    dict = {"axis":axis}
-    return dict
+    attributes = {"axis": axis}
+    return attributes
 
-# Calculate the output dimension
-def getConcatOutShape(input_shape):
-    n,c,w,h = input_shape[0][0],0,input_shape[0][2],input_shape[0][3]
-    for i in range(len(input_shape)):
-        c = c+input_shape[i][1]
-    output_shape = [[n,c,w,h]]
-    return output_shape
 
-# Build node
+def get_concat_outshape(layer, input_shape: List) -> List:
+    bottom = input_shape[0]
+    axis = layer.concat_param.axis
+
+    output_shape = copy.deepcopy(bottom)
+
+    assert (axis < len(bottom))
+
+    for i in range(1, len(input_shape)):
+        output_shape[axis] = output_shape[axis] + input_shape[i][axis]
+    return [output_shape]
+    #
+    # if len(bottom) == 2:
+    #     n, c = bottom[0], 0
+    #     for i in range(len(input_shape)):
+    #         c = c + input_shape[i][1]
+    #     output_shape = [[n, c]]
+    #     return output_shape
+    #
+    # elif len(bottom) == 3:
+    #     n, c = bottom[0], 0
+    #     for i in range(len(input_shape)):
+    #         c = c + input_shape[i][1]
+    #     output_shape = [[n, c]]
+    #     return output_shape
+    #
+    # elif len(bottom) == 4:
+    #     n, c, w, h = input_shape[0][0], 0, input_shape[0][2], input_shape[0][3]
+    #     for i in range(len(input_shape)):
+    #         c = c + input_shape[i][1]
+    #     output_shape = [[n, c, w, h]]
+    #     return output_shape
+
+
 def createConcat(layer, nodename, inname, outname, input_shape):
-    dict = getConcatAttri(layer)
-    output_shape = getConcatOutShape(input_shape)
-
-    node = Node.c2oNode(layer, nodename, "Concat", inname, outname, input_shape, output_shape, dict)
+    attributes = get_concat_attributes(layer)
+    output_shape = get_concat_outshape(layer, input_shape)
+    node = Node.c2oNode(layer, nodename, "Concat", inname, outname, input_shape, output_shape, attributes)
     return node
