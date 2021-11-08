@@ -3,7 +3,7 @@ import os
 
 # package metadata
 NAME = 'caffe2onnx'
-VERSION = '1.1.2'
+VERSION = '1.1.3'
 DESCRIPTION = 'Convert Caffe models to ONNX.'
 LICENSE = 'BSD-3'
 GIT = 'https://github.com/asiryan/caffe-onnx'
