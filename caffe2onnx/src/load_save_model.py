@@ -20,7 +20,7 @@ def loadonnxmodel(onnx_path):
 
 def saveonnxmodel(onnxmodel,onnx_save_path):
     try:
-        onnx.checker.check_model(onnxmodel)
+        #onnx.checker.check_model(onnxmodel)
         onnx.save_model(onnxmodel, onnx_save_path)
         print("onnx model has been successfully saved to " + onnx_save_path)
     except Exception as e:
